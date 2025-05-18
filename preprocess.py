@@ -3,22 +3,18 @@ from sklearn.preprocessing import LabelEncoder
 
 def preprocess_data(df):
     df = df.copy()
-
-    # Safely drop customerID if present
+    
+    # Safely drop customerID only if it exists
     df.drop(['customerID'], axis=1, inplace=True, errors='ignore')
 
-    # Convert TotalCharges to numeric, force errors to NaN
+    # Handle TotalCharges as numeric
     df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
 
-    # Fill numeric NaNs with column means
+    # Fill missing numeric values
     df.fillna(df.mean(numeric_only=True), inplace=True)
 
-    # Encode categorical columns
+    # Encode categorical features
     for column in df.select_dtypes(include=['object']).columns:
-        le = LabelEncoder()
-        try:
-            df[column] = le.fit_transform(df[column])
-        except:
-            df[column] = le.fit_transform(df[column].astype(str))  # handle unexpected types
+        df[column] = LabelEncoder().fit_transform(df[column].astype(str))
 
     return df
