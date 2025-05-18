@@ -5,7 +5,9 @@ def preprocess_data(df):
     df = df.copy()
     
     # Safely drop customerID only if it exists
-    df.drop(['customerID'], axis=1, inplace=True, errors='ignore')
+    if 'customerID' in df.columns:
+        df.drop(['customerID'], axis=1, inplace=True)
+
 
     # Handle TotalCharges as numeric
     df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
