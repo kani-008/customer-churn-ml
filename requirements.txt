@@ -1,0 +1,6 @@
+streamlit
+gradio
+flask
+pandas
+scikit-learn
+numpy
